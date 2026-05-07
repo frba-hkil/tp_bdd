@@ -101,8 +101,8 @@ entity Tipo_de_habitacion {
   tdp_id : <<PK>>
   --
   tdp_descripcion
-  tdp_cant_camas
-  tdp_precio_base
+  tdp_nombre
+  tdp_precio_noche
   tdp_hospedaje : <<FK>>
 }
 
