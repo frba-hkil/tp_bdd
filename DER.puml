@@ -227,6 +227,7 @@ entity Propuesta_Hospedaje {
   ph_fecha_desde
   ph_fecha_hasta
   ph_cant_habitaciones
+  ph_precio
   ph_subtotal
 }
 
