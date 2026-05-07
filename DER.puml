@@ -80,6 +80,9 @@ entity Vuelo {
   vue_fecha_llegada
   vue_hora_salida
   vue_hora_llegada
+  vue_incluye_carry
+  vue_incluye_valija
+  vue_duracion
 }
 
 entity Hospedaje {
