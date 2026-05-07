@@ -1,0 +1,322 @@
+@startuml
+hide circle
+skinparam linetype ortho
+
+entity Agencia {
+  age_nro_agencia : <<PK>>
+  --
+  age_descripcion
+  age_direccion
+  age_telefono
+  age_mail
+  age_localidad
+  age_provincia
+}
+
+entity Cliente {
+  cli_id : <<PK>>
+  --
+  cli_dni
+  cli_nombre
+  cli_apellido
+  cli_fecha_nacimiento
+  cli_mail
+  cli_telefono
+  cli_domicilio
+}
+
+entity Agente {
+  agt_legajo : <<PK>>
+  --
+  agt_agencia : <<FK>>
+  agt_dni
+  agt_nombre
+  agt_apellido
+  agt_fecha_nacimiento
+  agt_mail
+  agt_telefono
+  agt_direccion
+  agt_localidad
+  agt_provincia
+}
+
+entity CanalVenta {
+  cdv_id : <<PK>>
+  --
+  cdv_descripcion
+}
+
+entity MedioPago {
+  mdp_id : <<PK>>
+  --
+  mdp_descripcion
+}
+
+entity Ciudad {
+  cdad_id : <<PK>>
+  --
+  cdad_nombre
+  cdad_pais <<FK>>
+}
+
+entity Pais {
+  pais_id : <<PK>>
+  --
+  pais_nombre
+}
+
+entity Aerolinea {
+  aero_id : <<PK>>
+  --
+  aero_nombre
+}
+
+entity Aeropuerto {
+  id_aeropuerto : <<PK>>
+  --
+  codigo
+  nombre
+  ciudad
+  pais
+}
+
+entity Vuelo {
+  vue_id : <<PK>>
+  --
+  vue_aerolinea : <<FK>>
+  vue_aeropuerto_llegada : <<FK>>
+  vue_aeropuerto_salida : <<FK>>
+  vue_fecha_salida
+  vue_fecha_llegada
+  vue_hora_salida
+  vue_hora_llegada
+}
+
+entity Hospedaje {
+  hos_id : <<PK>>
+  --
+  hos_nombre
+  hos_direccion
+  hos_horario_checkin
+  hos_horario_checkout
+  hos_ciudad: <<FK>>
+  hos_incluye_desayuno
+}
+
+entity Tipo_de_habitacion {
+  tdp_id : <<PK>>
+  --
+  tdp_descripcion
+  tdp_cant_camas
+  tdp_precio_base
+  tdp_hospedaje : <<FK>>
+}
+
+entity Proveedor_Excursion {
+  pre_id : <<PK>>
+  --
+  pre_nombre
+  pre_mail
+  pre_telefono
+}
+
+entity Excursion {
+  exc_id : <<PK>>
+  --
+  exc_proveedor : <<FK>>
+  exc_nombre
+  exc_descripcion
+  exc_duracion
+  exc_horario
+  exc_precio
+  exc_ciudad <<FK>>
+}
+
+entity Venta {
+  ven_nro_venta : <<PK>>
+  --
+  ven_agencia : <<FK>>
+  ven_cli : <<FK>>
+  ven_agente : <<FK>>
+  ven_cdv : <<FK>>
+  ven_medio_pago : <<FK>>
+  ven_fecha
+  ven_subtotal
+  ven_descuento
+  ven_total
+  ven_propuesta : <<FK>>
+}
+
+entity Venta_Vuelo {
+  vv_id : <<PK>>
+  --
+  vv_venta : <<FK>>
+  vv_vuelo : <<FK>>
+  vv_cant_pasaje
+  vv_precio
+  vv_subtotal
+  vv_codigo_reserva
+}
+
+entity Venta_Hospedaje {
+  vh_id : PK
+  --
+  vh_venta : <<FK>>
+  vh_tipo_habitacion : <<FK>>
+  vh_fecha_desde
+  vh_fecha_hasta
+  vh_cantidad
+  vh_precio
+  vh_subtotal
+  vh_codigo_reserva
+}
+
+entity Venta_Excursion {
+  ve_id : <<PK>>
+  --
+  ve_venta : <<FK>>
+  ve_excursion : <<FK>>
+  ve_fecha
+  ve_cantidad
+  ve_precio
+  ve_subtotal
+  ve_codigo_reserva
+}
+
+entity Solicitud_Cotizacion {
+  sol_nro : <<PK>>
+  --
+  sol_cliente : <<FK>>
+  sol_agente : <<FK>>
+  sol_fecha_solicitud
+  sol_fecha_inicio
+  sol_fecha_fin
+  sol_cant_pasajeros
+  sol_presupuesto
+  sol_observaciones
+}
+
+entity Solicitud_Ciudad {
+  sc_id : <<PK>>
+  --
+  sc_solicitud : <<FK>>
+  sc_ciudad : <<FK>>
+  sc_cant_dias
+  sc_observaciones
+}
+
+entity Propuesta {
+  prop_id : <<PK>>
+  --
+  prop_solicitud : <<FK>>
+  prop_agente : <<FK>>
+  prop_aceptado : boolean
+  prop_fecha
+  prop_vigencia
+  prop_fecha_desde
+  prop_fecha_hasta
+  prop_subtotal
+  prop_descuento
+  prop_total
+}
+
+entity Propuesta_Vuelo {
+  pv_id : <<PK>>
+  --
+  pv_propuesta : <<FK>>
+  pv_vuelo : <<FK>>
+  pv_cantidad
+  pv_precio
+  pv_subtotal
+}
+  
+entity Propuesta_Hospedaje {
+  ph_id : <<PK>>
+  --
+  ph_propuesta : <<FK>>
+  ph_tipo_habitacion : <<FK>>
+  ph_fecha_desde
+  ph_fecha_hasta
+  ph_cant_habitaciones
+  ph_subtotal
+}
+
+entity Encuesta {
+  enc_id : <<PK>>
+  --
+  enc_cliente : <<FK>>
+  enc_agente : <<FK>>
+  enc_venta : <<FK>>
+  enc_propuesta : <<FK>>
+  enc_fecha
+  enc_comentario
+}
+
+entity Aspecto_Encuesta {
+  asp_id : <<PK>>
+  --
+  asp_descripcion
+}
+
+entity Valoracion_Encuesta {
+  val_id : <<PK>>
+  --
+  val_encuesta : <<FK>>
+  val_aspecto : <<FK>>
+  val_puntaje
+}
+
+Agencia ||--o{ Agente
+Agencia ||--o{ Venta
+
+Cliente ||--o{ Venta
+Cliente ||--o{ Solicitud_Cotizacion
+Cliente ||--o{ Encuesta
+
+Agente ||--o{ Venta
+Agente ||--o{ Solicitud_Cotizacion
+Agente ||--o{ Propuesta
+Agente ||--o{ Encuesta
+
+CanalVenta ||--o{ Venta
+MedioPago ||--o{ Venta
+
+Aerolinea ||--o{ Vuelo
+Aeropuerto ||--o{ Vuelo
+Aeropuerto ||--|| Ciudad
+
+Hospedaje ||--o{ Tipo_de_habitacion
+
+Proveedor_Excursion ||--o{ Excursion
+
+Venta ||--o{ Venta_Vuelo
+Venta ||--o{ Venta_Hospedaje
+Venta ||--o{ Venta_Excursion
+
+Vuelo ||--o{ Venta_Vuelo
+Tipo_de_habitacion ||--o{ Venta_Hospedaje
+Excursion ||--o{ Venta_Excursion
+Ciudad ||--o{ Excursion
+
+Solicitud_Cotizacion ||--o{ Solicitud_Ciudad
+Solicitud_Cotizacion ||--o{ Propuesta
+
+Ciudad ||--o{ Solicitud_Ciudad
+
+Propuesta ||--o{ Propuesta_Vuelo
+Propuesta ||--o{ Propuesta_Hospedaje
+
+Vuelo ||--o{ Propuesta_Vuelo
+Tipo_de_habitacion ||--o{ Propuesta_Hospedaje
+
+Propuesta ||--o{ Venta
+
+Encuesta ||--o{ Valoracion_Encuesta
+Aspecto_Encuesta ||--o{ Valoracion_Encuesta
+
+Venta ||--o{ Encuesta
+Propuesta ||--o{ Encuesta
+
+Ciudad ||--|| Pais
+
+@enduml
