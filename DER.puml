@@ -195,11 +195,11 @@ entity Detalle_Solicitud {
 }
 
 entity Propuesta {
-  prop_id : <<PK>>
+  prop_nro_propuesta : <<PK>>
   --
   prop_solicitud : <<FK>>
   prop_agente : <<FK>>
-  prop_aceptado : boolean
+  prop_estado
   prop_fecha
   prop_vigencia
   prop_fecha_desde
